@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>LSTTP - One Coin Toss Explorer</title>
+<title>LSTTP - Coin Toss Simulator</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -13,23 +12,77 @@
 
 body{
     font-family: Arial, sans-serif;
-    background:#f4f6f9;
+    background:#f4f6fa;
     margin:20px;
-    text-align:center;
 }
 
-h1{
+.header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.header h1{
     color:#c62828;
     margin-bottom:5px;
 }
 
-h2{
+.header h2{
+    margin-top:0;
     color:#444;
 }
 
-.coin{
-    font-size:120px;
-    margin:15px;
+.container{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+}
+
+.left-panel{
+    width:32%;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.right-panel{
+    width:68%;
+}
+
+.left-panel h2{
+    color:#c62828;
+    border-bottom:2px solid #eee;
+    padding-bottom:5px;
+}
+
+.left-panel p{
+    line-height:1.6;
+    text-align:justify;
+}
+
+.left-panel ul{
+    padding-left:20px;
+    line-height:1.8;
+}
+
+.simulator-box{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+#result{
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    color:#1565c0;
+    margin-bottom:15px;
+}
+
+.controls{
+    text-align:center;
+    margin-bottom:20px;
 }
 
 button{
@@ -39,142 +92,226 @@ button{
     padding:12px 20px;
     margin:5px;
     border-radius:8px;
-    font-size:16px;
     cursor:pointer;
+    font-size:16px;
 }
 
 button:hover{
-    background:#a91f1f;
+    background:#a61d1d;
 }
 
-.card-container{
+.cards{
     display:flex;
+    flex-wrap:wrap;
     justify-content:center;
     gap:15px;
-    flex-wrap:wrap;
-    margin-top:20px;
+    margin-bottom:20px;
 }
 
 .card{
-    background:white;
+    background:#fafafa;
     padding:15px;
+    width:140px;
+    text-align:center;
     border-radius:10px;
-    width:180px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    box-shadow:0 1px 5px rgba(0,0,0,.08);
 }
 
 .card h3{
     margin:0;
-    color:#555;
+    font-size:16px;
 }
 
 .card p{
-    font-size:28px;
+    font-size:24px;
     margin:10px 0 0;
-    color:#1565c0;
 }
 
 .chart-row{
     display:flex;
+    gap:20px;
     flex-wrap:wrap;
     justify-content:center;
-    gap:20px;
-    margin-top:30px;
 }
 
 .chart-box{
+    width:45%;
+    min-width:300px;
     background:white;
-    padding:20px;
+    padding:15px;
     border-radius:10px;
-    width:500px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    box-shadow:0 1px 5px rgba(0,0,0,.08);
 }
 
 .line-chart{
+    margin-top:20px;
     background:white;
-    padding:20px;
+    padding:15px;
     border-radius:10px;
-    margin-top:25px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    box-shadow:0 1px 5px rgba(0,0,0,.08);
+}
+
+@media(max-width:1000px){
+
+.container{
+    flex-direction:column;
+}
+
+.left-panel,
+.right-panel{
+    width:100%;
+}
+
+.chart-box{
+    width:100%;
+}
+
 }
 
 </style>
-
 </head>
 
 <body>
 
-<h1>LSTTP</h1>
-<h2>Learn Stats To The Point</h2>
-
-<h2>One Coin Toss Explorer</h2>
-
-<div class="coin" id="coin">🪙</div>
-
-<button onclick="tossCoin(1)">Toss 1</button> <button onclick="tossCoin(10)">Toss 10</button> <button onclick="tossCoin(100)">Toss 100</button> <button onclick="resetSimulation()">Reset</button>
-
-<h2 id="latestResult">Ready to Toss</h2>
-
-<div class="card-container">
-
-<div class="card">
-<h3>Total Tosses</h3>
-<p id="total">0</p>
+<div class="header">
+    <h1>LSTTP - Learn Stats To The Point</h1>
+    <h2>Coin Toss Simulator: Learning Probability Through Experimentation</h2>
 </div>
 
-<div class="card">
-<h3>Heads</h3>
-<p id="heads">0</p>
-</div>
+<div class="container">
 
-<div class="card">
-<h3>Tails</h3>
-<p id="tails">0</p>
-</div>
+    <!-- LEFT PANEL -->
 
-<div class="card">
-<h3>P(H)</h3>
-<p id="ph">0.000</p>
-</div>
+    <div class="left-panel">
 
-<div class="card">
-<h3>P(T)</h3>
-<p id="pt">0.000</p>
-</div>
+        <h2>Introduction</h2>
 
-</div>
+        <p>
+        Probability is the foundation of decision-making under uncertainty.
+        Managers use probability when forecasting demand, evaluating risk,
+        predicting customer behavior, and making investment decisions.
+        </p>
 
-<div class="chart-row">
+        <h2>Learning Objectives</h2>
 
-<div class="chart-box">
-<h3>Theoretical Probability</h3>
-<canvas id="pieChart"></canvas>
-</div>
+        <ul>
+            <li>Understand random experiments.</li>
+            <li>Identify sample space and outcomes.</li>
+            <li>Calculate theoretical probability.</li>
+            <li>Calculate experimental probability.</li>
+            <li>Understand the Law of Large Numbers.</li>
+            <li>Interpret probability through charts.</li>
+        </ul>
 
-<div class="chart-box">
-<h3>Observed Frequency</h3>
-<canvas id="barChart"></canvas>
-</div>
+        <h2>Key Concepts</h2>
 
-</div>
+        <ul>
+            <li><b>Random Experiment:</b> An action with uncertain outcome.</li>
+            <li><b>Sample Space:</b> {H, T}</li>
+            <li><b>Theoretical Probability:</b> P(H)=0.5, P(T)=0.5</li>
+            <li><b>Experimental Probability:</b> Based on observed outcomes.</li>
+            <li><b>Law of Large Numbers:</b> Experimental probability approaches theoretical probability as trials increase.</li>
+        </ul>
 
-<div class="line-chart">
-<h3>Law of Large Numbers</h3>
-<canvas id="lineChart"></canvas>
+        <h2>Educational Impact</h2>
+
+        <p>
+        This simulator enables experiential learning by allowing students
+        to perform repeated experiments and observe randomness in real time.
+        Students compare theoretical and experimental probability while
+        interpreting visual evidence through charts and graphs.
+        </p>
+
+        <h2>Reflection Questions</h2>
+
+        <ol>
+            <li>Does Head occur exactly 50% of the time?</li>
+            <li>What happens after 100 tosses?</li>
+            <li>Why does the probability curve move toward 0.5?</li>
+            <li>How is experimental probability different from theoretical probability?</li>
+        </ol>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+
+    <div class="right-panel">
+
+        <div class="simulator-box">
+
+            <div id="result">Ready to Toss</div>
+
+            <div class="controls">
+                <button onclick="tossCoin(1)">Toss 1</button>
+                <button onclick="tossCoin(10)">Toss 10</button>
+                <button onclick="tossCoin(100)">Toss 100</button>
+                <button onclick="resetAll()">Reset</button>
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+                    <h3>Total Tosses</h3>
+                    <p id="total">0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Heads</h3>
+                    <p id="heads">0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Tails</h3>
+                    <p id="tails">0</p>
+                </div>
+
+                <div class="card">
+                    <h3>P(H)</h3>
+                    <p id="ph">0.000</p>
+                </div>
+
+                <div class="card">
+                    <h3>P(T)</h3>
+                    <p id="pt">0.000</p>
+                </div>
+
+            </div>
+
+            <div class="chart-row">
+
+                <div class="chart-box">
+                    <h3>Theoretical Probability</h3>
+                    <canvas id="pieChart"></canvas>
+                </div>
+
+                <div class="chart-box">
+                    <h3>Observed Frequency</h3>
+                    <canvas id="barChart"></canvas>
+                </div>
+
+            </div>
+
+            <div class="line-chart">
+                <h3>Law of Large Numbers</h3>
+                <canvas id="lineChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 <script>
 
-let heads = 0;
-let tails = 0;
-let total = 0;
+let heads=0;
+let tails=0;
+let total=0;
 
-let lineLabels = [];
-let lineData = [];
+let labels=[];
+let probabilities=[];
 
-const pieChart = new Chart(
-document.getElementById('pieChart'),
-{
+const pieChart=new Chart(document.getElementById('pieChart'),{
 type:'pie',
 data:{
 labels:['Head','Tail'],
@@ -182,12 +319,9 @@ datasets:[{
 data:[50,50]
 }]
 }
-}
-);
+});
 
-const barChart = new Chart(
-document.getElementById('barChart'),
-{
+const barChart=new Chart(document.getElementById('barChart'),{
 type:'bar',
 data:{
 labels:['Head','Tail'],
@@ -196,12 +330,9 @@ label:'Frequency',
 data:[0,0]
 }]
 }
-}
-);
+});
 
-const lineChart = new Chart(
-document.getElementById('lineChart'),
-{
+const lineChart=new Chart(document.getElementById('lineChart'),{
 type:'line',
 data:{
 labels:[],
@@ -211,80 +342,71 @@ data:[]
 }]
 },
 options:{
-responsive:true
+scales:{
+y:{
+min:0,
+max:1
 }
 }
-);
+}
+});
 
 function tossCoin(n){
 
-for(let i=0;i<n;i++){
+let latest="";
 
-let result;
+for(let i=0;i<n;i++){
 
 if(Math.random()<0.5){
 heads++;
-result="HEAD";
+latest="HEAD";
 }
 else{
 tails++;
-result="TAIL";
+latest="TAIL";
 }
 
 total++;
 
-let pHead = heads/total;
-
-lineLabels.push(total);
-lineData.push(pHead);
-
-document.getElementById("latestResult").innerHTML =
-"Latest Outcome: " + result;
+labels.push(total);
+probabilities.push(heads/total);
 }
+
+document.getElementById("result").innerHTML=
+"Latest Outcome: " + latest;
 
 updateDisplay();
 }
 
 function updateDisplay(){
 
-let ph = total===0 ? 0 : heads/total;
-let pt = total===0 ? 0 : tails/total;
+let ph=(total===0)?0:heads/total;
+let pt=(total===0)?0:tails/total;
 
-document.getElementById("total").innerHTML = total;
-document.getElementById("heads").innerHTML = heads;
-document.getElementById("tails").innerHTML = tails;
+document.getElementById("total").innerHTML=total;
+document.getElementById("heads").innerHTML=heads;
+document.getElementById("tails").innerHTML=tails;
+document.getElementById("ph").innerHTML=ph.toFixed(3);
+document.getElementById("pt").innerHTML=pt.toFixed(3);
 
-document.getElementById("ph").innerHTML =
-ph.toFixed(3);
-
-document.getElementById("pt").innerHTML =
-pt.toFixed(3);
-
-barChart.data.datasets[0].data =
-[heads,tails];
-
+barChart.data.datasets[0].data=[heads,tails];
 barChart.update();
 
-lineChart.data.labels =
-lineLabels;
-
-lineChart.data.datasets[0].data =
-lineData;
-
+lineChart.data.labels=labels;
+lineChart.data.datasets[0].data=probabilities;
 lineChart.update();
 }
 
-function resetSimulation(){
+function resetAll(){
 
-heads = 0;
-tails = 0;
-total = 0;
+heads=0;
+tails=0;
+total=0;
 
-lineLabels = [];
-lineData = [];
+labels=[];
+probabilities=[];
 
-document.getElementById("latestResult").innerHTML =
-"Ready to Toss";
+document.getElementById("result").innerHTML="Ready to Toss";
 
 updateDisplay();
 }
