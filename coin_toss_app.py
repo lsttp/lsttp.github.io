@@ -1,189 +1,303 @@
-import streamlit as st
-import random
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-st.set_page_config(
-    page_title="LSTTP - One Coin Toss Explorer",
-    layout="wide"
-)
+<title>LSTTP - Coin Toss Explorer</title>
 
-# Session State
-if "heads" not in st.session_state:
-    st.session_state.heads = 0
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-if "tails" not in st.session_state:
-    st.session_state.tails = 0
+<style>
 
-if "total" not in st.session_state:
-    st.session_state.total = 0
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f7fb;
+    margin:20px;
+    text-align:center;
+}
 
-if "history" not in st.session_state:
-    st.session_state.history = []
+h1{
+    color:#c62828;
+}
 
-# Header
-st.title("🎲 LSTTP")
-st.subheader("Learn Stats To The Point")
-st.markdown("## One Coin Toss Explorer")
+.controls{
+    margin:20px;
+}
 
-# Buttons
-col1, col2, col3, col4 = st.columns(4)
+button{
+    background:#c62828;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    margin:5px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
 
-def toss_coin(n):
+button:hover{
+    background:#a61d1d;
+}
 
-    for _ in range(n):
+.cards{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin:20px 0;
+}
 
-        result = random.choice(["Head", "Tail"])
+.card{
+    background:white;
+    padding:15px;
+    width:180px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
 
-        st.session_state.total += 1
+.card h3{
+    margin:0;
+}
 
-        if result == "Head":
-            st.session_state.heads += 1
-        else:
-            st.session_state.tails += 1
+.card p{
+    font-size:26px;
+    margin:10px 0 0;
+}
 
-        p_head = st.session_state.heads / st.session_state.total
+.row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+}
 
-        st.session_state.history.append(
-            {
-                "Toss": st.session_state.total,
-                "P_Head": p_head
-            }
-        )
+.chart-box{
+    background:white;
+    width:500px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
 
-with col1:
-    if st.button("Toss 1"):
-        toss_coin(1)
+.line-box{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    margin-top:20px;
+}
 
-with col2:
-    if st.button("Toss 10"):
-        toss_coin(10)
+#result{
+    font-size:28px;
+    font-weight:bold;
+    color:#1565c0;
+}
 
-with col3:
-    if st.button("Toss 100"):
-        toss_coin(100)
+</style>
+</head>
 
-with col4:
-    if st.button("Reset"):
+<body>
 
-        st.session_state.heads = 0
-        st.session_state.tails = 0
-        st.session_state.total = 0
-        st.session_state.history = []
+<h1>LSTTP</h1>
+<h2>Learn Stats To The Point</h2>
+<h2>One Coin Toss Explorer</h2>
 
-# Statistics
-st.markdown("---")
+<div id="result">Ready to Toss</div>
 
-c1, c2, c3, c4, c5 = st.columns(5)
+<div class="controls">
+<button onclick="tossCoin(1)">Toss 1</button>
+<button onclick="tossCoin(10)">Toss 10</button>
+<button onclick="tossCoin(100)">Toss 100</button>
+<button onclick="resetAll()">Reset</button>
+</div>
 
-c1.metric("Total Tosses", st.session_state.total)
-c2.metric("Heads", st.session_state.heads)
-c3.metric("Tails", st.session_state.tails)
+<div class="cards">
 
-if st.session_state.total > 0:
+<div class="card">
+<h3>Total Tosses</h3>
+<p id="total">0</p>
+</div>
 
-    ph = st.session_state.heads / st.session_state.total
-    pt = st.session_state.tails / st.session_state.total
+<div class="card">
+<h3>Heads</h3>
+<p id="heads">0</p>
+</div>
 
-else:
-    ph = 0
-    pt = 0
+<div class="card">
+<h3>Tails</h3>
+<p id="tails">0</p>
+</div>
 
-c4.metric("Experimental P(H)", f"{ph:.3f}")
-c5.metric("Experimental P(T)", f"{pt:.3f}")
+<div class="card">
+<h3>P(H)</h3>
+<p id="ph">0.000</p>
+</div>
 
-# Sample Space
-st.markdown("---")
+<div class="card">
+<h3>P(T)</h3>
+<p id="pt">0.000</p>
+</div>
 
-st.markdown("""
-### Concept Panel
+</div>
 
-**Experiment:** Tossing a Coin
+<div class="row">
 
-**Sample Space:** {H, T}
+<div class="chart-box">
+<h3>Theoretical Probability</h3>
+<canvas id="pieChart"></canvas>
+</div>
 
-**P(H) = 0.5**
+<div class="chart-box">
+<h3>Observed Frequency</h3>
+<canvas id="barChart"></canvas>
+</div>
 
-**P(T) = 0.5**
-""")
+</div>
 
-# Charts
-left, right = st.columns(2)
+<div class="line-box">
+<h3>Law of Large Numbers</h3>
+<canvas id="lineChart"></canvas>
+</div>
 
-# Pie Chart
-with left:
+<script>
 
-    pie_df = pd.DataFrame(
-        {
-            "Outcome": ["Head", "Tail"],
-            "Probability": [50, 50]
-        }
-    )
+let heads=0;
+let tails=0;
+let total=0;
 
-    fig_pie = px.pie(
-        pie_df,
-        names="Outcome",
-        values="Probability",
-        title="Theoretical Probability"
-    )
+let labels=[];
+let probabilities=[];
 
-    st.plotly_chart(fig_pie, use_container_width=True)
+const pieChart=new Chart(
+document.getElementById('pieChart'),
+{
+type:'pie',
+data:{
+labels:['Head','Tail'],
+datasets:[{
+data:[50,50]
+}]
+}
+}
+);
 
-# Bar Chart
-with right:
+const barChart=new Chart(
+document.getElementById('barChart'),
+{
+type:'bar',
+data:{
+labels:['Head','Tail'],
+datasets:[{
+label:'Frequency',
+data:[0,0]
+}]
+},
+options:{
+responsive:true
+}
+}
+);
 
-    bar_df = pd.DataFrame(
-        {
-            "Outcome": ["Head", "Tail"],
-            "Count": [
-                st.session_state.heads,
-                st.session_state.tails
-            ]
-        }
-    )
+const lineChart=new Chart(
+document.getElementById('lineChart'),
+{
+type:'line',
+data:{
+labels:[],
+datasets:[{
+label:'Experimental P(H)',
+data:[],
+fill:false,
+tension:0.1
+}]
+},
+options:{
+responsive:true,
+scales:{
+y:{
+min:0,
+max:1
+}
+}
+}
+}
+);
 
-    fig_bar = px.bar(
-        bar_df,
-        x="Outcome",
-        y="Count",
-        title="Observed Frequency"
-    )
+function tossCoin(n){
 
-    st.plotly_chart(fig_bar, use_container_width=True)
+let latest="";
 
-# Convergence Graph
-st.markdown("---")
+for(let i=0;i<n;i++){
 
-history_df = pd.DataFrame(st.session_state.history)
+if(Math.random()<0.5){
+heads++;
+latest="HEAD";
+}
+else{
+tails++;
+latest="TAIL";
+}
 
-fig = go.Figure()
+total++;
 
-if len(history_df) > 0:
+let p=heads/total;
 
-    fig.add_trace(
-        go.Scatter(
-            x=history_df["Toss"],
-            y=history_df["P_Head"],
-            mode="lines",
-            name="Experimental P(H)"
-        )
-    )
+labels.push(total);
+probabilities.push(p);
+}
 
-fig.add_hline(
-    y=0.5,
-    line_dash="dash",
-    annotation_text="Theoretical P(H)=0.5"
-)
+document.getElementById("result").innerHTML=
+"Latest Outcome: "+latest;
 
-fig.update_layout(
-    title="Law of Large Numbers",
-    xaxis_title="Number of Tosses",
-    yaxis_title="Experimental Probability of Head"
-)
+updateDisplay();
+}
 
-st.plotly_chart(fig, use_container_width=True)
+function updateDisplay(){
 
-st.info(
-    "Observe how the experimental probability approaches 0.5 as the number of tosses increases."
-)
+let ph=(total===0)?0:heads/total;
+let pt=(total===0)?0:tails/total;
+
+document.getElementById("total").innerHTML=total;
+document.getElementById("heads").innerHTML=heads;
+document.getElementById("tails").innerHTML=tails;
+
+document.getElementById("ph").innerHTML=
+ph.toFixed(3);
+
+document.getElementById("pt").innerHTML=
+pt.toFixed(3);
+
+barChart.data.datasets[0].data=[
+heads,
+tails
+];
+
+barChart.update();
+
+lineChart.data.labels=labels;
+lineChart.data.datasets[0].data=
+probabilities;
+
+lineChart.update();
+}
+
+function resetAll(){
+
+heads=0;
+tails=0;
+total=0;
+
+labels=[];
+probabilities=[];
+
+document.getElementById("result").innerHTML=
+"Ready to Toss";
+
+updateDisplay();
+}
+
+</script>
+
+</body>
+</html>
