@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LSTTP - One Coin Toss Explorer</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f7fa;
+    text-align:center;
+    padding:30px;
+}
+
+h1{
+    color:#c1121f;
+}
+
+h2{
+    color:#003049;
+}
+
+.coin{
+    width:180px;
+    height:180px;
+    margin:30px auto;
+    border-radius:50%;
+    background:gold;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:60px;
+    font-weight:bold;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+button{
+    background:#c1121f;
+    color:white;
+    border:none;
+    padding:15px 30px;
+    font-size:18px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#9b0d18;
+}
+
+.card{
+    background:white;
+    max-width:700px;
+    margin:20px auto;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.stat{
+    font-size:20px;
+    margin:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>LSTTP</h1>
+<h2>One Coin Toss Explorer</h2>
+
+<div class="coin" id="coin">
+?
+</div>
+
+<button onclick="tossCoin()">TOSS COIN</button>
+
+<div class="card">
+
+<h3>Sample Space</h3>
+
+<p>{ H , T }</p>
+
+<p>P(H) = 1/2 = 0.5</p>
+
+<p>P(T) = 1/2 = 0.5</p>
+
+</div>
+
+<div class="card">
+
+<h3>Experimental Results</h3>
+
+<div class="stat">
+Total Tosses:
+<span id="total">0</span>
+</div>
+
+<div class="stat">
+Heads:
+<span id="heads">0</span>
+</div>
+
+<div class="stat">
+Tails:
+<span id="tails">0</span>
+</div>
+
+<div class="stat">
+Experimental P(H):
+<span id="ph">0</span>
+</div>
+
+<div class="stat">
+Experimental P(T):
+<span id="pt">0</span>
+</div>
+
+</div>
+
+<script>
+
+let total=0;
+let heads=0;
+let tails=0;
+
+function tossCoin(){
+
+let result=Math.random()<0.5 ? "H":"T";
+
+document.getElementById("coin").innerHTML=result;
+
+total++;
+
+if(result==="H"){
+heads++;
+}
+else{
+tails++;
+}
+
+document.getElementById("total").innerHTML=total;
+document.getElementById("heads").innerHTML=heads;
+document.getElementById("tails").innerHTML=tails;
+
+document.getElementById("ph").innerHTML=
+(heads/total).toFixed(3);
+
+document.getElementById("pt").innerHTML=
+(tails/total).toFixed(3);
+
+}
+
+</script>
+
+</body>
+</html>
