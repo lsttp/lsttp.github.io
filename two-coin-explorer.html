@@ -1,1 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Two Coin Decision Lab</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+margin:0;
+background:#f5f7fb;
+}
+
+header{
+background:#0d47a1;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.container{
+display:flex;
+gap:20px;
+padding:20px;
+}
+
+.left{
+width:30%;
+}
+
+.right{
+width:70%;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+h2{
+margin-top:0;
+}
+
+button{
+padding:12px 20px;
+margin:5px;
+border:none;
+border-radius:6px;
+background:#1565c0;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#0d47a1;
+}
+
+.stat-box{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.stat{
+background:#e3f2fd;
+padding:15px;
+border-radius:8px;
+text-align:center;
+min-width:120px;
+}
+
+canvas{
+margin-top:20px;
+}
+
+@media(max-width:900px){
+
+.container{
+flex-direction:column;
+}
+
+.left,.right{
+width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>LSTTP – Learn Stats To The Point</h1>
+
+<h2>Two-Coin Decision Lab</h2>
+
+<p>
+Data-Driven Understanding of Probability
+</p>
+
+</header>
+
+<div class="container">
+
+<div class="left">
+
+<div class="card">
+
+<h2>Business Context</h2>
+
+<p>
+
+Managers often make decisions under uncertainty.
+
+A single observation may be misleading.
+
+Repeated observations reveal patterns.
+
+This simulator demonstrates how data gradually converges toward theoretical probability.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Learning Objectives</h2>
+
+<ul>
+
+<li>Understand sample space</li>
+
+<li>Understand probability distribution</li>
+
+<li>Observe randomness</li>
+
+<li>See the Law of Large Numbers</li>
+
+<li>Make evidence-based conclusions</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Theoretical Model</h2>
+
+<p>
+
+Sample Space:
+
+</p>
+
+<h3>
+HH, HT, TH, TT
+</h3>
+
+<p>
+
+Probability of:
+
+</p>
+
+<ul>
+
+<li>0 Heads = 25%</li>
+
+<li>1 Head = 50%</li>
+
+<li>2 Heads = 25%</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="card">
+
+<h2>Run Experiment</h2>
+
+<button onclick="simulate(1)">Toss 1</button>
+
+<button onclick="simulate(10)">Toss 10</button>
+
+<button onclick="simulate(100)">Toss 100</button>
+
+<button onclick="simulate(1000)">Toss 1000</button>
+
+<button onclick="resetData()">Reset</button>
+
+<div class="stat-box">
+
+<div class="stat">
+<h3 id="total">0</h3>
+<p>Total Trials</p>
+</div>
+
+<div class="stat">
+<h3 id="hh">0</h3>
+<p>HH</p>
+</div>
+
+<div class="stat">
+<h3 id="ht">0</h3>
+<p>HT</p>
+</div>
+
+<div class="stat">
+<h3 id="th">0</h3>
+<p>TH</p>
+</div>
+
+<div class="stat">
+<h3 id="tt">0</h3>
+<p>TT</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Observed Outcome Distribution</h2>
+
+<canvas id="outcomeChart"></canvas>
+
+</div>
+
+<div class="card">
+
+<h2>Heads Distribution</h2>
+
+<canvas id="headsChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let HH=0;
+let HT=0;
+let TH=0;
+let TT=0;
+let total=0;
+
+const outcomeChart=new Chart(
+document.getElementById("outcomeChart"),
+{
+type:'bar',
+data:{
+labels:['HH','HT','TH','TT'],
+datasets:[{
+label:'Frequency',
+data:[0,0,0,0]
+}]
+}
+}
+);
+
+const headsChart=new Chart(
+document.getElementById("headsChart"),
+{
+type:'pie',
+data:{
+labels:['0 Heads','1 Head','2 Heads'],
+datasets:[{
+data:[0,0,0]
+}]
+}
+}
+);
+
+function simulate(n){
+
+for(let i=0;i<n;i++){
+
+let c1=Math.random()<0.5?'H':'T';
+let c2=Math.random()<0.5?'H':'T';
+
+let result=c1+c2;
+
+total++;
+
+if(result==='HH') HH++;
+if(result==='HT') HT++;
+if(result==='TH') TH++;
+if(result==='TT') TT++;
+
+}
+
+updateDisplay();
+
+}
+
+function updateDisplay(){
+
+document.getElementById('total').innerText=total;
+document.getElementById('hh').innerText=HH;
+document.getElementById('ht').innerText=HT;
+document.getElementById('th').innerText=TH;
+document.getElementById('tt').innerText=TT;
+
+outcomeChart.data.datasets[0].data=[HH,HT,TH,TT];
+outcomeChart.update();
+
+headsChart.data.datasets[0].data=[
+TT,
+HT+TH,
+HH
+];
+
+headsChart.update();
+
+}
+
+function resetData(){
+
+HH=0;
+HT=0;
+TH=0;
+TT=0;
+total=0;
+
+updateDisplay();
+
+}
+
+</script>
+
+</body>
+</html>
