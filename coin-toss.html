@@ -1,159 +1,158 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSTTP - One Coin Toss Explorer</title>
 
-<title>LSTTP - One Coin Toss Explorer</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            text-align:center;
+            background:#f8f9fa;
+            margin:40px;
+        }
 
-<style>
+        h1{
+            color:#c62828;
+        }
 
-body{
-    font-family: Arial, sans-serif;
-    background:#f5f7fa;
-    text-align:center;
-    padding:30px;
-}
+        .coin{
+            font-size:120px;
+            margin:20px;
+        }
 
-h1{
-    color:#c1121f;
-}
+        button{
+            padding:12px 25px;
+            font-size:18px;
+            background:#c62828;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
 
-h2{
-    color:#003049;
-}
+        button:hover{
+            background:#a61d1d;
+        }
 
-.coin{
-    width:180px;
-    height:180px;
-    margin:30px auto;
-    border-radius:50%;
-    background:gold;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:60px;
-    font-weight:bold;
-    box-shadow:0 5px 15px rgba(0,0,0,0.3);
-}
+        .card{
+            background:white;
+            padding:20px;
+            margin:20px auto;
+            max-width:700px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
 
-button{
-    background:#c1121f;
-    color:white;
-    border:none;
-    padding:15px 30px;
-    font-size:18px;
-    border-radius:10px;
-    cursor:pointer;
-}
+        .result{
+            font-size:32px;
+            font-weight:bold;
+            color:#1565c0;
+        }
 
-button:hover{
-    background:#9b0d18;
-}
+        table{
+            margin:auto;
+            border-collapse:collapse;
+        }
 
-.card{
-    background:white;
-    max-width:700px;
-    margin:20px auto;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.stat{
-    font-size:20px;
-    margin:10px;
-}
-
-</style>
-
+        td{
+            padding:10px 25px;
+            border:1px solid #ddd;
+        }
+    </style>
 </head>
 
 <body>
 
 <h1>LSTTP</h1>
+<h2>Learn Stats To The Point</h2>
+
+<div class="card">
+
 <h2>One Coin Toss Explorer</h2>
 
-<div class="coin" id="coin">
-?
-</div>
+<div class="coin">🪙</div>
+
+<p>
+Experiment: Tossing One Coin
+</p>
+
+<p>
+Sample Space: {H, T}
+</p>
 
 <button onclick="tossCoin()">TOSS COIN</button>
 
-<div class="card">
-
-<h3>Sample Space</h3>
-
-<p>{ H , T }</p>
-
-<p>P(H) = 1/2 = 0.5</p>
-
-<p>P(T) = 1/2 = 0.5</p>
+<p class="result" id="result">
+Click Toss Coin
+</p>
 
 </div>
 
 <div class="card">
 
-<h3>Experimental Results</h3>
+<h2>Experimental Results</h2>
 
-<div class="stat">
-Total Tosses:
-<span id="total">0</span>
-</div>
+<table>
+<tr>
+<td>Total Tosses</td>
+<td id="total">0</td>
+</tr>
 
-<div class="stat">
-Heads:
-<span id="heads">0</span>
-</div>
+<tr>
+<td>Heads</td>
+<td id="heads">0</td>
+</tr>
 
-<div class="stat">
-Tails:
-<span id="tails">0</span>
-</div>
+<tr>
+<td>Tails</td>
+<td id="tails">0</td>
+</tr>
 
-<div class="stat">
-Experimental P(H):
-<span id="ph">0</span>
-</div>
+<tr>
+<td>Experimental P(H)</td>
+<td id="ph">0</td>
+</tr>
 
-<div class="stat">
-Experimental P(T):
-<span id="pt">0</span>
-</div>
+<tr>
+<td>Experimental P(T)</td>
+<td id="pt">0</td>
+</tr>
+</table>
 
 </div>
 
 <script>
 
-let total=0;
-let heads=0;
-let tails=0;
+let heads = 0;
+let tails = 0;
+let total = 0;
 
 function tossCoin(){
 
-let result=Math.random()<0.5 ? "H":"T";
+    let outcome;
 
-document.getElementById("coin").innerHTML=result;
+    if(Math.random() < 0.5){
+        outcome = "HEAD";
+        heads++;
+    }
+    else{
+        outcome = "TAIL";
+        tails++;
+    }
 
-total++;
+    total++;
 
-if(result==="H"){
-heads++;
-}
-else{
-tails++;
-}
+    document.getElementById("result").innerHTML = outcome;
 
-document.getElementById("total").innerHTML=total;
-document.getElementById("heads").innerHTML=heads;
-document.getElementById("tails").innerHTML=tails;
+    document.getElementById("total").innerHTML = total;
+    document.getElementById("heads").innerHTML = heads;
+    document.getElementById("tails").innerHTML = tails;
 
-document.getElementById("ph").innerHTML=
-(heads/total).toFixed(3);
+    document.getElementById("ph").innerHTML =
+        (heads/total).toFixed(3);
 
-document.getElementById("pt").innerHTML=
-(tails/total).toFixed(3);
-
+    document.getElementById("pt").innerHTML =
+        (tails/total).toFixed(3);
 }
 
 </script>
