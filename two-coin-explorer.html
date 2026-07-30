@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Two-Coin Decision Lab</title>
+<title>LSTTP - Two Coin Decision Lab</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -19,39 +19,51 @@ box-sizing:border-box;
 body{
 font-family:Arial, sans-serif;
 background:#f5f7fb;
+font-size:15px;
+color:#222;
 }
 
 header{
 background:#17479e;
 color:white;
 text-align:center;
-padding:25px;
+padding:12px;
 }
 
 header h1{
-margin-bottom:10px;
+font-size:30px;
+margin-bottom:5px;
+}
+
+header h2{
+font-size:20px;
+margin-bottom:4px;
+}
+
+header p{
+font-size:14px;
 }
 
 .container{
 display:flex;
-gap:20px;
-padding:20px;
+gap:12px;
+padding:12px;
 }
 
 .left{
-width:30%;
+width:25%;
 }
 
 .right{
-width:70%;
+width:75%;
 }
 
 .card{
 background:white;
-padding:20px;
-border-radius:12px;
-margin-bottom:20px;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
+padding:12px;
+border-radius:10px;
+margin-bottom:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .profile-card{
@@ -59,27 +71,42 @@ text-align:center;
 }
 
 .profile-card img{
-width:180px;
-height:180px;
+width:120px;
+height:120px;
 border-radius:50%;
 object-fit:cover;
-border:5px solid #17479e;
-margin-bottom:15px;
+border:4px solid #17479e;
+margin-bottom:8px;
 }
 
 .profile-card h3{
 color:#17479e;
-margin-bottom:10px;
+margin-bottom:6px;
+}
+
+h2{
+font-size:20px;
+margin-bottom:8px;
+}
+
+p{
+line-height:1.4;
+}
+
+ul{
+margin-left:18px;
+margin-top:6px;
 }
 
 button{
 background:#1565c0;
 color:white;
 border:none;
-padding:10px 18px;
+padding:8px 14px;
 border-radius:6px;
 cursor:pointer;
-margin:5px;
+margin:3px;
+font-size:14px;
 }
 
 button:hover{
@@ -88,42 +115,67 @@ background:#0d47a1;
 
 .stats{
 display:flex;
-gap:15px;
+gap:8px;
 flex-wrap:wrap;
-margin-top:20px;
+margin-top:12px;
 }
 
 .stat{
 background:#e8f1fb;
-padding:15px;
-border-radius:10px;
-min-width:120px;
+padding:8px;
+border-radius:8px;
+min-width:90px;
 text-align:center;
 }
 
 .stat h3{
-margin-bottom:5px;
+font-size:18px;
+margin-bottom:3px;
+}
+
+.stat p{
+font-size:13px;
 }
 
 .chart-box{
 background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-margin-bottom:20px;
+padding:12px;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+margin-bottom:12px;
+height:270px;
 }
 
-canvas{
-margin-top:15px;
+.chart-box canvas{
+max-height:180px !important;
 }
 
-ul{
-margin-left:20px;
+table{
+width:100%;
+border-collapse:collapse;
 margin-top:10px;
+font-size:14px;
 }
 
-p{
-line-height:1.5;
+table th{
+background:#17479e;
+color:white;
+padding:8px;
+}
+
+table td{
+padding:8px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+.footer-note{
+background:#fff8e1;
+padding:10px;
+border-left:4px solid #f9a825;
+border-radius:5px;
+margin-top:10px;
+font-size:14px;
 }
 
 @media(max-width:900px){
@@ -132,13 +184,23 @@ line-height:1.5;
 flex-direction:column;
 }
 
-.left,.right{
+.left,
+.right{
 width:100%;
+}
+
+.chart-box{
+height:auto;
+}
+
+.chart-box canvas{
+max-height:none !important;
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
@@ -156,67 +218,52 @@ width:100%;
 <div class="container">
 
 <div class="left">
-<div class="card">
-<center>
 
-<img src="images/surender-kumar.jpg"
-style="width:180px;height:180px;border-radius:50%;border:4px solid #17479e;">
-
-<h3>Dr. Surender Kumar</h3>
-
-<p>Creator - Learn Stats To The Point</p>
-
-</center>
-</div>
 <div class="card profile-card">
 
-<img src="images/surender-kumar.jpg" alt="Creator">
+<img src="images/surender-kumar.jpg" alt="Dr Surender Kumar">
 
 <h3>Dr. Surender Kumar</h3>
 
-<p>
-Creator of LSTTP
-</p>
+<p>Founder – Learn Stats To The Point</p>
+
+<p>Statistics • Analytics • AI</p>
+
+</div>
+
+<div class="card">
+
+<h2>Managerial Scenario</h2>
 
 <p>
-Making Statistics Simple Through Interactive Learning
+
+Managers make decisions under uncertainty.
+
+A few observations can be misleading.
+
+Large datasets reveal stable patterns.
+
+This simulator demonstrates why evidence-based decisions are more reliable than intuition.
+
 </p>
 
 </div>
 
 <div class="card">
 
-<h2>Business Context</h2>
-
-<p>
-
-Managers often make decisions under uncertainty.
-
-A single observation may be misleading.
-
-Repeated observations reveal stable patterns.
-
-This simulator demonstrates how evidence accumulates and supports better decision making.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h2>Learning Objectives</h2>
+<h2>Learning Outcomes</h2>
 
 <ul>
 
 <li>Understand sample space</li>
 
-<li>Understand randomness</li>
+<li>Understand probability distribution</li>
 
-<li>Understand probability distributions</li>
+<li>Observe randomness</li>
 
-<li>Observe the Law of Large Numbers</li>
+<li>Understand convergence</li>
 
-<li>Develop evidence-based thinking</li>
+<li>Practice evidence-based thinking</li>
 
 </ul>
 
@@ -224,17 +271,15 @@ This simulator demonstrates how evidence accumulates and supports better decisio
 
 <div class="card">
 
-<h2>Theoretical Model</h2>
+<h2>Decision Framework</h2>
 
-<p><strong>Sample Space</strong></p>
+<p><b>Sample Space</b></p>
 
-<p>
-HH, HT, TH, TT
-</p>
+<p>HH, HT, TH, TT</p>
 
 <br>
 
-<p><strong>Probability of Heads</strong></p>
+<p><b>Theoretical Probabilities</b></p>
 
 <ul>
 <li>0 Heads = 25%</li>
@@ -262,7 +307,7 @@ HH, HT, TH, TT
 
 <div class="stat">
 <h3 id="total">0</h3>
-<p>Total Trials</p>
+<p>Total</p>
 </div>
 
 <div class="stat">
@@ -291,7 +336,7 @@ HH, HT, TH, TT
 
 <div class="chart-box">
 
-<h2>Observed Outcome Distribution</h2>
+<h2>Outcome Distribution</h2>
 
 <canvas id="outcomeChart"></canvas>
 
@@ -299,9 +344,61 @@ HH, HT, TH, TT
 
 <div class="chart-box">
 
-<h2>Distribution of Number of Heads</h2>
+<h2>Distribution of Heads</h2>
 
 <canvas id="headsChart"></canvas>
+
+</div>
+
+<div class="card">
+
+<h2>Experimental vs Theoretical Probability</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Observed %</th>
+<th>Theoretical %</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>HH</td>
+<td id="phh">0%</td>
+<td>25%</td>
+</tr>
+
+<tr>
+<td>HT</td>
+<td id="pht">0%</td>
+<td>25%</td>
+</tr>
+
+<tr>
+<td>TH</td>
+<td id="pth">0%</td>
+<td>25%</td>
+</tr>
+
+<tr>
+<td>TT</td>
+<td id="ptt">0%</td>
+<td>25%</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<div class="footer-note" id="insight">
+
+Run an experiment to generate insights.
+
+</div>
 
 </div>
 
@@ -329,7 +426,8 @@ data:[0,0,0,0]
 }]
 },
 options:{
-responsive:true
+responsive:true,
+maintainAspectRatio:false
 }
 }
 );
@@ -345,7 +443,8 @@ data:[0,0,0]
 }]
 },
 options:{
-responsive:true
+responsive:true,
+maintainAspectRatio:false
 }
 }
 );
@@ -354,17 +453,17 @@ function simulate(n){
 
 for(let i=0;i<n;i++){
 
-let c1=Math.random()<0.5?'H':'T';
-let c2=Math.random()<0.5?'H':'T';
+let coin1=Math.random()<0.5?'H':'T';
+let coin2=Math.random()<0.5?'H':'T';
 
-let result=c1+c2;
+let result=coin1+coin2;
 
 total++;
 
-if(result==='HH') HH++;
-if(result==='HT') HT++;
-if(result==='TH') TH++;
-if(result==='TT') TT++;
+if(result==="HH") HH++;
+if(result==="HT") HT++;
+if(result==="TH") TH++;
+if(result==="TT") TT++;
 
 }
 
@@ -374,11 +473,11 @@ updateDisplay();
 
 function updateDisplay(){
 
-document.getElementById('total').innerText=total;
-document.getElementById('hh').innerText=HH;
-document.getElementById('ht').innerText=HT;
-document.getElementById('th').innerText=TH;
-document.getElementById('tt').innerText=TT;
+document.getElementById("total").innerText=total;
+document.getElementById("hh").innerText=HH;
+document.getElementById("ht").innerText=HT;
+document.getElementById("th").innerText=TH;
+document.getElementById("tt").innerText=TT;
 
 outcomeChart.data.datasets[0].data=[HH,HT,TH,TT];
 outcomeChart.update();
@@ -388,8 +487,34 @@ TT,
 HT+TH,
 HH
 ];
-
 headsChart.update();
+
+if(total>0){
+
+let phh=(HH/total*100).toFixed(1);
+let pht=(HT/total*100).toFixed(1);
+let pth=(TH/total*100).toFixed(1);
+let ptt=(TT/total*100).toFixed(1);
+
+document.getElementById("phh").innerText=phh+"%";
+document.getElementById("pht").innerText=pht+"%";
+document.getElementById("pth").innerText=pth+"%";
+document.getElementById("ptt").innerText=ptt+"%";
+
+let insight="";
+
+if(total<30){
+insight="Small sample size. Observed probabilities may fluctuate substantially.";
+}
+else if(total<200){
+insight="Patterns are emerging. Continue collecting data.";
+}
+else{
+insight="Large sample size. Experimental probabilities are approaching theoretical probabilities.";
+}
+
+document.getElementById("insight").innerText=insight;
+}
 
 }
 
@@ -400,6 +525,14 @@ HT=0;
 TH=0;
 TT=0;
 total=0;
+
+document.getElementById("phh").innerText="0%";
+document.getElementById("pht").innerText="0%";
+document.getElementById("pth").innerText="0%";
+document.getElementById("ptt").innerText="0%";
+
+document.getElementById("insight").innerText=
+"Run an experiment to generate insights.";
 
 updateDisplay();
 
