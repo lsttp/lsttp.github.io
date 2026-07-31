@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Bayes Credit Risk Challenge</title>
+<style>
+body{font-family:Arial;background:#f4f7fb;margin:0;padding:20px} .container{max-width:1100px;margin:auto}
+.header,.card{background:white;padding:20px;border-radius:12px;margin:15px 0}
+.header{background:#0b3d91;color:white;text-align:center}
+.founder{display:flex;gap:25px;align-items:center;flex-wrap:wrap}
+.founder img{width:240px;height:240px;object-fit:cover;border-radius:18px}
+input,textarea{padding:8px} button{padding:10px 15px}
+</style></head>
+<body><div class='container'>
+<div class='header'><h1>LSTTP Learning Lab</h1><h2>Bayes Credit Risk Challenge</h2></div>
+<div class='card founder'>
+<img src='images/surender-kumar.jpg'>
+<div><h3>Designed and Guided by</h3><h2>Dr. Surender Kumar</h2><p>Ph.D. (Statistics)</p><p>Faculty – Decision Sciences</p><p>Jaipuria Institute of Management, Noida</p></div>
+</div>
+<div class='card'><h2>Story</h2><p>5% default. 80% of defaulters missed payments. 10% of non-defaulters missed payments.</p></div>
+<div class='card'>
+<h2>Step 1</h2>
+P(Default)% <input id='pd'><br><br>
+P(Missed|Default)% <input id='pmd'><br><br>
+P(Missed|No Default)% <input id='pmnd'><br><br>
+<button onclick='check1()'>Check</button><div id='s1'></div>
+</div>
+<div class='card'>
+<h2>Step 2</h2>
+P(Missed Payment)% <input id='pmiss'>
+<button onclick='check2()'>Check</button><div id='s2'></div>
+</div>
+<div class='card'>
+<h2>Step 3</h2>
+P(Default|Missed Payment)% <input id='post'>
+<button onclick='check3()'>Check</button><div id='s3'></div>
+</div>
+<div class='card'><h2>AI Tutor</h2>
+<textarea id='q' rows='4' style='width:100%'></textarea><br><button onclick='ask()'>Ask Tutor</button>
+<div id='t'></div></div>
+<div class='card'><div id='decision'>Complete the challenge.</div></div>
+</div>
+<script>
+function near(a,b,t){return Math.abs(a-b)<=t}
+function check1(){s1.innerHTML=(near(+pd.value,5,.5)&&near(+pmd.value,80,.5)&&near(+pmnd.value,10,.5))?'Correct':'Review story data';}
+function check2(){s2.innerHTML=near(+pmiss.value,13.5,.5)?'Correct evidence probability':'Consider both groups';}
+function check3(){if(near(+post.value,29.63,1)){s3.innerHTML='Excellent';decision.innerHTML='<h3>Decision: Reject Loan</h3><p>Risk > 25%</p>';}else{s3.innerHTML='Try again';}}
+function ask(){let x=q.value.toLowerCase();t.innerHTML=x.includes('80')?'80% is P(Missed|Default), not posterior probability.':'Hint: compute evidence first, then apply Bayes theorem.';}
+</script></body></html>
