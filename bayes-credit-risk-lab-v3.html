@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bayes Lab V3 - Credit Risk Challenge</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0;color:#222}
+header{background:#0b3d91;color:white;padding:30px;text-align:center}
+.container{max-width:1200px;margin:auto;padding:20px}
+.card{background:white;padding:20px;margin:15px 0;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+input,textarea{width:100%;padding:10px;margin:5px 0}
+button{padding:10px 15px;border:none;border-radius:8px;background:#0b3d91;color:white;cursor:pointer}
+.result{font-weight:bold;margin-top:10px}
+.founder{display:flex;gap:20px;align-items:center}
+.founder img{width:180px;border-radius:12px}
+@media(max-width:768px){.grid,.founder{display:block}.founder img{width:120px}}
+</style>
+</head>
+<body>
+<header>
+<h1>Bayes Lab 01: Credit Risk Challenge</h1>
+<p>Learn Bayesian Thinking Through Business Decisions</p>
+</header>
+
+<div class="container">
+
+<div class="card founder">
+<img src="images/surender-kumar.jpg" alt="Founder">
+<div>
+<h2>Designed and Guided by</h2>
+<h3>Dr. Surender Kumar, Ph.D. (Statistics)</h3>
+<p>Faculty – Decision Sciences, Jaipuria Institute of Management, Noida</p>
+</div>
+</div>
+
+<div class="card">
+<h2>TrustBank Case Brief</h2>
+<p>Riya Sharma, Credit Manager at TrustBank, must evaluate a ₹8,00,000 loan request from Arjun Sharma. Historical records show:</p>
+<ul>
+<li>P(Default)=5%</li>
+<li>P(Missed Payment | Default)=80%</li>
+<li>P(Missed Payment | No Default)=10%</li>
+</ul>
+<p>The applicant has a missed-payment history. Should the loan be approved?</p>
+</div>
+
+<div class="card">
+<h2>Bayes Concept Visual</h2>
+<p>Use Bayes' theorem to update beliefs after observing evidence.</p>
+</div>
+
+<div class="card grid">
+<div>
+<h3>Evidence Probability</h3>
+<label>P(Missed Payment)</label>
+<input id="evidence">
+<button onclick="checkEvidence()">Check</button>
+<div id="evidenceResult" class="result"></div>
+</div>
+
+<div>
+<h3>Posterior Probability</h3>
+<label>P(Default | Missed Payment)</label>
+<input id="posterior">
+<button onclick="checkPosterior()">Check</button>
+<div id="posteriorResult" class="result"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Smart Statistics Tutor</h2>
+<input id="question" placeholder="Ask about prior, posterior, denominator, Bayes, 80% etc.">
+<button onclick="askTutor()">Ask Tutor</button>
+<div id="tutorAnswer" class="result"></div>
+</div>
+
+<div class="card">
+<h2>Hints</h2>
+<button onclick="hint(1)">Hint 1</button>
+<button onclick="hint(2)">Hint 2</button>
+<button onclick="hint(3)">Hint 3</button>
+<button onclick="hint(4)">Hint 4</button>
+<div id="hintBox"></div>
+</div>
+
+<div class="card">
+<h2>Decision Dashboard</h2>
+<select id="decision">
+<option>Approve</option>
+<option>Review Further</option>
+<option>Reject</option>
+</select>
+<textarea id="notes" rows="4" placeholder="Explain your decision"></textarea>
+</div>
+
+<div class="card">
+<h2>Generate AI Tutor Prompt</h2>
+<button onclick="generatePrompt()">Generate Prompt</button>
+<textarea id="promptBox" rows="10"></textarea>
+</div>
+
+</div>
+
+<script>
+const correctEvidence=13.5;
+const correctPosterior=29.63;
+
+function checkEvidence(){
+ let v=parseFloat(document.getElementById('evidence').value);
+ let msg=Math.abs(v-correctEvidence)<0.2?
+ "Correct! Evidence probability is 13.5%":
+ "Review the Law of Total Probability.";
+ document.getElementById('evidenceResult').innerText=msg;
+}
+
+function checkPosterior(){
+ let v=parseFloat(document.getElementById('posterior').value);
+ let msg="";
+ if(Math.abs(v-correctPosterior)<0.2) msg="Excellent! Posterior = 29.63%";
+ else if(Math.abs(v-80)<1) msg="You confused likelihood with posterior.";
+ else if(Math.abs(v-5)<1) msg="You entered the prior probability.";
+ else msg="Check numerator and denominator again.";
+ document.getElementById('posteriorResult').innerText=msg;
+}
+
+function askTutor(){
+ let q=document.getElementById('question').value.toLowerCase();
+ let ans="Try asking about prior, posterior, Bayes, denominator or 80%.";
+ if(q.includes('prior')) ans="Prior probability is the belief before observing evidence.";
+ if(q.includes('posterior')) ans="Posterior probability is the updated belief after evidence.";
+ if(q.includes('denominator')) ans="Denominator is P(Missed)=0.8×0.05+0.1×0.95=0.135.";
+ if(q.includes('numerator')) ans="Numerator is P(Missed and Default)=0.8×0.05=0.04.";
+ if(q.includes('80')) ans="80% is P(Missed|Default), not P(Default|Missed).";
+ if(q.includes('bayes')) ans="Bayes updates beliefs using new evidence.";
+ document.getElementById('tutorAnswer').innerText=ans;
+}
+
+function hint(n){
+ const hints={
+ 1:"Think about all ways a missed payment can occur.",
+ 2:"Use the Law of Total Probability.",
+ 3:"P(Missed)=0.8×0.05 + 0.1×0.95",
+ 4:"Posterior = 0.04 / 0.135 = 29.63%"
+ };
+ document.getElementById('hintBox').innerText=hints[n];
+}
+
+function generatePrompt(){
+ let e=document.getElementById('evidence').value;
+ let p=document.getElementById('posterior').value;
+ document.getElementById('promptBox').value=`I am solving a Bayes Theorem problem.
+
+Case: Credit Risk Challenge
+
+P(Default)=5%
+P(Missed|Default)=80%
+P(Missed|No Default)=10%
+
+My Evidence Probability=${e}
+My Posterior Probability=${p}
+
+Please check my reasoning, identify mistakes, and guide me step by step without immediately giving the answer.`;
+}
+</script>
+</body>
+</html>
