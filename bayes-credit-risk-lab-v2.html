@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bayes Lab 01 - Credit Risk Challenge</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f4f7fb;color:#222}
+.hero{background:linear-gradient(135deg,#0b5ed7,#5b9cff);color:white;padding:50px 20px;text-align:center}
+.container{max-width:1200px;margin:auto;padding:20px}
+.card{background:white;border-radius:16px;padding:24px;margin:20px 0;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.founder{display:flex;gap:30px;align-items:center;flex-wrap:wrap}
+.founder img{width:280px;height:280px;object-fit:cover;border-radius:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}
+.kpi{background:#eef5ff;padding:15px;border-radius:12px}
+.progress{display:flex;gap:10px;flex-wrap:wrap}
+.step{padding:10px 15px;border-radius:20px;background:#e9ecef}
+.active{background:#0b5ed7;color:white}
+input{padding:10px;width:100%;margin:6px 0}
+button{padding:10px 18px;background:#0b5ed7;color:white;border:none;border-radius:8px;cursor:pointer}
+.result{font-weight:bold;font-size:20px}
+.chat{height:180px;border:1px solid #ddd;padding:10px;overflow:auto;border-radius:8px;background:#fafafa}
+.badge{display:inline-block;background:#d1e7dd;padding:8px 12px;border-radius:20px;margin:5px}
+@media(max-width:700px){.founder img{width:220px;height:220px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h3>LSTTP Learning Lab</h3>
+<h1>Bayesian Decision Making</h1>
+<h2>Credit Risk Challenge (Bayes Lab 01)</h2>
+</div>
+
+<div class="container">
+
+<div class="card founder">
+<div>
+<img src="images/surender-kumar.jpg" alt="Dr Surender Kumar">
+</div>
+<div>
+<h2>Designed and Guided by</h2>
+<h1>Dr. Surender Kumar</h1>
+<p><b>Ph.D. (Statistics)</b><br>
+Faculty – Decision Sciences<br>
+Jaipuria Institute of Management, Noida</p>
+<p>Welcome to the Bayesian Credit Risk Challenge. Act as a Credit Risk Analyst and update your beliefs using evidence.</p>
+</div>
+</div>
+
+<div class="card">
+<h2>Monday Morning at TrustBank</h2>
+<p>Riya Sharma, Senior Credit Risk Manager, receives a loan application from Arjun Sharma, a retail business owner seeking a loan of ₹8,00,000.</p>
+<div class="grid">
+<div class="kpi"><b>Applicant</b><br>Arjun Sharma</div>
+<div class="kpi"><b>Business</b><br>Retail</div>
+<div class="kpi"><b>Loan Amount</b><br>₹8,00,000</div>
+<div class="kpi"><b>Status</b><br>Under Review</div>
+</div>
+<p style="color:red"><b>Warning:</b> Applicant has a recent missed-payment history.</p>
+</div>
+
+<div class="card">
+<h2>Progress Tracker</h2>
+<div class="progress">
+<div class="step active">Step 1</div>
+<div class="step">Step 2</div>
+<div class="step">Step 3</div>
+<div class="step">Decision</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Step 1: Extract Information</h2>
+<p>P(Default)=5%, P(Missed|Default)=80%, P(Missed|No Default)=10%</p>
+</div>
+
+<div class="card">
+<h2>Step 2: Calculate Evidence Probability</h2>
+<p>Compute P(Missed Payment)</p>
+<input id="evidence" placeholder="Enter percentage e.g. 13.5">
+<button onclick="checkEvidence()">Check</button>
+<p id="evmsg"></p>
+</div>
+
+<div class="card">
+<h2>Step 3: Bayesian Updating</h2>
+<p>Compute P(Default | Missed Payment)</p>
+<input id="posterior" placeholder="Enter percentage e.g. 29.63">
+<button onclick="checkPosterior()">Check</button>
+<p id="postmsg"></p>
+</div>
+
+<div class="card">
+<h2>Bayes Visualizer</h2>
+<h3>Prior Risk → Evidence → Updated Risk</h3>
+<div class="grid">
+<div class="kpi">Prior Risk<br><b>5%</b></div>
+<div class="kpi">Missed Payment</div>
+<div class="kpi">Posterior Risk<br><b>29.63%</b></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Ask Dr. Kumar's AI Tutor</h2>
+<div class="chat" id="chat">
+<p><b>Tutor:</b> Ask me about Bayes' Theorem.</p>
+</div>
+<input id="q" placeholder="Type your question">
+<button onclick="askTutor()">Ask</button>
+</div>
+
+<div class="card">
+<h2>Decision Dashboard</h2>
+<div id="decision" class="result">Awaiting Calculation...</div>
+</div>
+
+<div class="card">
+<h2>Learning Summary</h2>
+<span class="badge">Prior Probability</span>
+<span class="badge">Conditional Probability</span>
+<span class="badge">Evidence Probability</span>
+<span class="badge">Bayes Theorem</span>
+<span class="badge">Credit Risk Decision</span>
+</div>
+
+</div>
+
+<script>
+function checkEvidence(){
+ let v=parseFloat(document.getElementById('evidence').value);
+ let msg=document.getElementById('evmsg');
+ if(Math.abs(v-13.5)<0.2){
+   msg.innerHTML="✅ Correct. P(Missed)=13.5%";
+ }else{
+   msg.innerHTML="❌ Hint: Use the Law of Total Probability.";
+ }
+}
+function checkPosterior(){
+ let v=parseFloat(document.getElementById('posterior').value);
+ let msg=document.getElementById('postmsg');
+ let dec=document.getElementById('decision');
+ if(Math.abs(v-29.63)<1){
+   msg.innerHTML="✅ Correct Posterior Risk.";
+   dec.innerHTML="🔴 Reject Loan — Risk = 29.63% (>25%)";
+ }else{
+   msg.innerHTML="❌ Recheck numerator and denominator.";
+ }
+}
+function askTutor(){
+ let q=document.getElementById('q').value.toLowerCase();
+ let chat=document.getElementById('chat');
+ let ans="Think about how evidence changes the prior belief.";
+ if(q.includes('denominator')) ans="The denominator is the probability of observing the evidence.";
+ if(q.includes('80')) ans="80% is P(Missed|Default), not P(Default|Missed).";
+ if(q.includes('simple')) ans="Bayes updates old beliefs using new evidence.";
+ chat.innerHTML += "<p><b>You:</b> "+q+"</p><p><b>Tutor:</b> "+ans+"</p>";
+}
+</script>
+
+</body>
+</html>
